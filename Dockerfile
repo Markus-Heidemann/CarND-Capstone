@@ -25,6 +25,9 @@ RUN apt-get install -y ros-$ROS_DISTRO-cv-bridge
 RUN apt-get install -y ros-$ROS_DISTRO-pcl-ros
 RUN apt-get install -y ros-$ROS_DISTRO-image-proc
 
+# install catkin tools
+RUN apt-get install python-catkin-tools
+
 # socket io
 RUN apt-get install -y netbase
 
