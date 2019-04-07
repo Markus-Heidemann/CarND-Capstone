@@ -4,5 +4,4 @@ build
 devel
 
 profile.tmp
-.vscode/ipch/a225563d0706d807/mmap_address.bin
-.vscode/ipch/c4df915c03caa79c/mmap_address.bin
+.vscode/*
