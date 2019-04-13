@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 
-import rospy
-import numpy as np
-from geometry_msgs.msg import PoseStamped
-from styx_msgs.msg import Lane, Waypoint
-from scipy.spatial import KDTree
-from std_msgs.msg import Int32
-
 import math
+
+import numpy as np
+from scipy.spatial import KDTree
+
+import rospy
+from geometry_msgs.msg import PoseStamped
+from std_msgs.msg import Int32
+from styx_msgs.msg import Lane, Waypoint
 
 '''
 This node will publish waypoints from the car's current position to some `x` distance ahead.
