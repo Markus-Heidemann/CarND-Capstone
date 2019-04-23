@@ -1,6 +1,6 @@
 <launch>
-    <node pkg="rosbag" type="play" name="rosbag" required="true" args="/home/markus/Udacity/data/just_traffic_light.bag"/>
+    <node pkg="rosbag" type="play" name="rosbag" required="true" args="/home/markus/Udacity/bagfiles/subset.bag"/>
     <node name="extract" pkg="image_view" type="extract_images" respawn="false" required="true" output="screen" cwd="ROS_HOME">
-        <remap from="image" to="/image_raw"/>
+        <remap from="image" to="/image_color"/>
     </node>
 </launch>

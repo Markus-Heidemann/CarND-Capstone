@@ -6,7 +6,8 @@ from styx_msgs.msg import TrafficLightArray, TrafficLight
 from styx_msgs.msg import Lane
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
-from light_classification.tl_classifier import TLClassifier
+# from light_classification.tl_classifier import TLClassifier
+from light_classification.tl_classifier_simple import TLClassifierSimple
 from scipy.spatial import KDTree
 import tf
 import cv2
@@ -44,7 +45,7 @@ class TLDetector(object):
         self.upcoming_red_light_pub = rospy.Publisher('/traffic_waypoint', Int32, queue_size=1)
 
         self.bridge = CvBridge()
-        self.light_classifier = TLClassifier()
+        self.light_classifier = TLClassifierSimple()
         self.listener = tf.TransformListener()
 
         self.state = TrafficLight.UNKNOWN
@@ -76,6 +77,12 @@ class TLDetector(object):
         """
         self.has_image = True
         self.camera_image = msg
+
+        self.publish_traffic_waypoint()
+
+
+    def publish_traffic_waypoint(self):
+
         light_wp, state = self.process_traffic_lights()
 
         '''
@@ -129,6 +136,8 @@ class TLDetector(object):
         #Get classification
         return self.light_classifier.get_classification(cv_image)
 
+        # return light.state
+
     def process_traffic_lights(self):
         """Finds closest visible traffic light, if one exists, and determines its
             location and color
@@ -163,7 +172,7 @@ class TLDetector(object):
 
             #TODO find the closest visible traffic light (if one exists)
             diff = len(self.waypoints.waypoints)
-            for i, light in enumerate(self. lights):
+            for i, light in enumerate(self.lights):
                 # Get stop line waypoint index
                 line = stop_line_positions[i]
                 temp_wp_idx = self.get_closest_waypoint(line[0], line[1])
@@ -174,7 +183,7 @@ class TLDetector(object):
                     closest_light = light
                     line_wp_idx = temp_wp_idx
 
-        if closest_light:
+        if closest_light and diff < 15:
             state = self.get_light_state(closest_light)
             return line_wp_idx, state
 
