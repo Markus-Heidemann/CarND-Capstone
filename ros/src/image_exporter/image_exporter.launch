@@ -1,6 +1,0 @@
-<launch>
-    <node pkg="rosbag" type="play" name="rosbag" required="true" args="/home/markus/Udacity/data/own_bagfiles/sim_capture_2019-04-28-14-20-11.bag"/>
-    <node name="extract" pkg="image_view" type="image_saver" respawn="false" required="true" output="screen" cwd="ROS_HOME">
-        <remap from="image" to="/image_color"/>
-    </node>
-</launch>

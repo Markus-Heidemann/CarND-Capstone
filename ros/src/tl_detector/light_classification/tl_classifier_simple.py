@@ -19,7 +19,7 @@ class TLClassifierSimple(object):
     def __init__(self):
 
         # load the model for the traffic light bounding box detection
-        SSD_GRAPH_FILE = '/home/markus/Udacity/models/ssd_mobilenet_v1_coco_11_06_2017/frozen_inference_graph.pb'
+        SSD_GRAPH_FILE = './models/ssd_mobilenet_v1_coco_11_06_2017/frozen_inference_graph.pb'
         detection_graph = self.load_graph(SSD_GRAPH_FILE)
 
         # The input placeholder for the image.
@@ -45,7 +45,7 @@ class TLClassifierSimple(object):
         # Load the model for the traffic light state classification
         global keras_version
 
-        TL_CNN_H5 = '/home/markus/workspace/CarND-Capstone/model.h5'
+        TL_CNN_H5 = './models/tl_state_classifier/model.h5'
         f = h5py.File(TL_CNN_H5, mode='r')
         model_version = f.attrs.get('keras_version')
         keras_version = str(keras_version).encode('utf8')

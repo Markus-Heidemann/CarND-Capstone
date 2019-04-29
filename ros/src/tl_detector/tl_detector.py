@@ -6,14 +6,13 @@ from styx_msgs.msg import TrafficLightArray, TrafficLight
 from styx_msgs.msg import Lane
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
-# from light_classification.tl_classifier import TLClassifier
 from light_classification.tl_classifier_simple import TLClassifierSimple
 from scipy.spatial import KDTree
 import tf
 import cv2
 import yaml
 
-STATE_COUNT_THRESHOLD = 2
+STATE_COUNT_THRESHOLD = 3
 
 class TLDetector(object):
     def __init__(self):
@@ -45,7 +44,6 @@ class TLDetector(object):
         self.upcoming_red_light_pub = rospy.Publisher('/traffic_waypoint', Int32, queue_size=1)
 
         self.bridge = CvBridge()
-        self.light_classifier = TLClassifierSimple()
         self.listener = tf.TransformListener()
 
         self.state = TrafficLight.UNKNOWN
@@ -53,6 +51,11 @@ class TLDetector(object):
         self.last_state_detection = TrafficLight.UNKNOWN
         self.last_wp = -1
         self.state_count = 0
+
+        # Since TLClassifierSimple takes some time to initialize, we want to make sure, that self.light_classifier
+        # exists as soon as image_cb() is called for the first time
+        self.light_classifier = None
+        self.light_classifier = TLClassifierSimple()
 
         rospy.spin()
 
@@ -84,7 +87,9 @@ class TLDetector(object):
         self.has_image = True
         self.camera_image = msg
 
-        self.publish_traffic_waypoint()
+        # Make sure, that TLClassifierSimple is done initializing, before processing the first image
+        if self.light_classifier is not None:
+            self.publish_traffic_waypoint()
 
 
     def publish_traffic_waypoint(self):
