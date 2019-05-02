@@ -50,11 +50,9 @@ class TLClassifierSimple(object):
         model_version = f.attrs.get('keras_version')
         keras_version = str(keras_version).encode('utf8')
 
-        if model_version != keras_version:
-            print('You are using Keras version ', keras_version,
-                ', but the model was built using ', model_version)
-
-        # self.tl_state_model = load_model(TL_CNN_H5)
+        # if model_version != keras_version:
+        #     print('You are using Keras version ', keras_version,
+        #         ', but the model was built using ', model_version)
 
         global tl_state_model
         tl_state_model = load_model(TL_CNN_H5)
